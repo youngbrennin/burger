@@ -1,33 +1,31 @@
+// PULLING IN THE CONNECTION FROM SQL
 var connection = require('./connection.js');
 
+
+// METHODS FOR GETTING OR ALTERATING DATA FROM THE DATABASE
 var orm = {
-    selectAll: function (tableInput, colToSearch, valOfCol) {
-        var queryString = "SELECT * FROM ?? WHERE ?? = ?";
-        connection.query(queryString, [tableInput, colToSearch, valOfCol], function (err, result) {
-            if (err) throw err;
-            console.log(result);
+    selectAll: function (tableName, cb) {
+        var queryString = "SELECT * FROM " + tableName;
+        connection.query(queryString, function (error, result) {
+            if (error) throw error;
+            cb(result);
         });
     },
-    insertOne: function (tableInput, colToSearch, valOfCol) {
-        var queryString = "SELECT * FROM ?? WHERE ?? = ?";
-        connection.query(queryString, [tableInput, colToSearch, valOfCol], function (err, result) {
-            if (err) throw err;
-            console.log(result);
+    insertOne: function (tableName, cols, vals, cb) {
+        var queryString = "INSERT INTO " + tableName + "(" + cols + ") VALUES (" + vals + ")";
+        connection.query(queryString, function (error, result) {
+            if (error) throw error;
+            cb(result);
         });
     },
-    updateOne: function (tableInput, colToSearch, valOfCol) {
-        var queryString = "SELECT * FROM ?? WHERE ?? = ?";
-        connection.query(queryString, [tableInput, colToSearch, valOfCol], function (err, result) {
-            if (err) throw err;
-            console.log(result);
+    updateOne: function (tableName, cols, vals, whereToSet, whereVal, cb) {
+        var queryString = "UPDATE " + tableName + " SET " + cols + "=" + vals + " WHERE " + whereToSet + "=" + whereVal;
+        connection.query(queryString, function (error, result) {
+            if (error) throw error;
+            cb(result);
         });
     }
 };
-
-
-
-
-
 
 
 module.exports = orm;
